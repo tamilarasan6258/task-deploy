@@ -1,6 +1,18 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ReactiveFormsModule
+} from '@angular/forms';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogModule
+} from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { TaskService } from '../../services/tasks/task.service';
 import { CommonModule } from '@angular/common';
@@ -37,7 +49,6 @@ export class TaskDetailsDialogComponent implements OnInit {
   fb = inject(FormBuilder);
 
   editable = false;
-  duplicateNameError = false;
 
   minDate: Date = new Date();
   maxDate: Date | null = null;
@@ -60,7 +71,7 @@ export class TaskDetailsDialogComponent implements OnInit {
       taskDesc: [{ value: task.taskDesc, disabled: true }, Validators.required],
       dueDate: [{ value: new Date(task.dueDate), disabled: true }, Validators.required],
       priority: [{ value: task.priority, disabled: true }, Validators.required],
-      status: [{ value: task.status, disabled: true }, Validators.required],
+      status: [{ value: task.status, disabled: true }, Validators.required]
     });
 
     const projectId = task.project?._id || task.project;
@@ -68,10 +79,18 @@ export class TaskDetailsDialogComponent implements OnInit {
       this.existingTaskNames = tasks
         .filter(t => t._id !== task._id)
         .map(t => t.taskName.trim().toLowerCase());
+
+      const control = this.taskForm.get('taskName');
+      control?.setValidators([
+        Validators.required,
+        this.taskNamePatternValidator(),
+        this.duplicateTaskNameValidator(this.existingTaskNames)
+      ]);
+      control?.updateValueAndValidity();
     });
   }
 
-  taskNamePatternValidator(): Validators {
+  taskNamePatternValidator(): import('@angular/forms').ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value?.trim();
       if (!value) return null;
@@ -89,6 +108,15 @@ export class TaskDetailsDialogComponent implements OnInit {
       if (onlyNumbers.test(value)) return { invalidPattern: true };
 
       return null;
+    };
+  }
+
+  duplicateTaskNameValidator(existingNames: string[]) {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value?.trim().toLowerCase();
+      if (!value) return null;
+
+      return existingNames.includes(value) ? { duplicateName: true } : null;
     };
   }
 
@@ -117,13 +145,6 @@ export class TaskDetailsDialogComponent implements OnInit {
 
   updateTask(): void {
     const formValue = this.taskForm.getRawValue();
-    const taskName = formValue.taskName.trim().toLowerCase();
-
-    if (this.existingTaskNames.includes(taskName)) {
-      this.duplicateNameError = true;
-      return;
-    }
-
     const updatedTask = {
       ...this.originalTask,
       ...formValue
