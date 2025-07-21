@@ -1,0 +1,122 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div class="register-page">
+  <!--Register component - parent class of Header component-->
+  <app-header [hideAuthButtons]="true"></app-header>
+
+  <!-- Registration Form -->
+  <main class="register-container">
+    <h2 class="page-title">Create Account</h2>
+    <mat-card class="register-card">
+
+      <form (ngSubmit)="register()">
+        <!-- Step 1: Username and Email -->
+        <div class="form-section">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Username</mat-label>
+            <input matInput type="text" [(ngModel)]="uname" name="uname"
+              placeholder="Enter your username (min 6 characters)" required (input)="onUsernameChange()" />
+            <mat-error *ngIf="uname && !validateUsername()">Username must be at least 6 characters</mat-error>
+          </mat-form-field>
+          <div *ngIf="usernameError" class="custom-error-message">{{ usernameError }}</div>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Email Address</mat-label>
+            <input matInput type="email" [(ngModel)]="email" name="email" placeholder="Enter your email" required
+              (input)="onEmailChange()" />
+            <mat-error *ngIf="email && !validateEmail()">Please enter a valid email address</mat-error>
+          </mat-form-field>
+          <div *ngIf="emailError" class="custom-error-message">{{ emailError }}</div>
+          <!-- 
+          <div class="button-container" *ngIf="!otpSent">
+            <button mat-raised-button color="accent" type="button" (click)="sendOTP()"
+              [disabled]="!uname || !email || !validateUsername() || !validateEmail()">
+              {{ isSendingOtp ? 'Sending OTP...' : 'Send OTP' }}
+            </button>
+          </div> -->
+
+          <div class="button-container" *ngIf="!otpSent">
+            <button mat-raised-button color="accent" type="button" (click)="sendOTP()"
+              [disabled]="isSendingOtp || !uname || !email || !validateUsername() || !validateEmail()">
+              {{ isSendingOtp ? 'Sending OTP...' : 'Send OTP' }}
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Step 2: OTP Verification -->
+        <div class="form-section" *ngIf="otpMsg">
+          <div class="otp-message">
+            {{otpMsg}}
+          </div>
+
+          <div class="otp-input-container">
+            <!-- <mat-form-field appearance="fill" class="otp-field">
+              <mat-label>Enter OTP</mat-label>
+              <input matInput type="text" [(ngModel)]="otp" name="otp" placeholder="Enter the OTP you received"
+                required />
+            </mat-form-field> -->
+
+            <mat-form-field appearance="fill" class="otp-field">
+              <mat-label>Enter OTP</mat-label>
+              <input matInput type="text" name="otp" [(ngModel)]="otp" maxlength="4" inputmode="numeric"
+                placeholder="Enter the 4-digit OTP" required (keypress)="allowOnlyDigits($event)"
+                (input)="onOtpInput($event)"  [disabled]="otpVerified" />
+            </mat-form-field>
+
+
+
+
+            <!-- <button mat-raised-button color="primary" type="button" (click)="verifyOtp()" class="verify-button"
+              [disabled]="otpVerified || isVerifyingOtp || !otp || otpAttempts >= maxOtpAttempts">
+              {{ isVerifyingOtp ? 'Verifying OTP...' : 'Verify OTP' }}
+            </button> -->
+
+            <button mat-raised-button color="primary" type="button" (click)="verifyOtp()" class="verify-button"
+              [disabled]="otpVerified || isVerifyingOtp || !isValidOtp() || otpAttempts >= maxOtpAttempts">
+              {{ isVerifyingOtp ? 'Verifying OTP...' : (otpVerified ? 'OTP Verified' : 'Verify OTP') }}
+            </button>
+
+          </div>
+
+          <div class="otp-verification-message" *ngIf="otpVerificationMessage" [class.success]="otpVerified"
+            [class.error]="!otpVerified">
+            {{otpVerificationMessage}}
+          </div>
+        </div>
+
+        <!-- Step 3: Password -->
+        <div class="form-section" *ngIf="otpVerified">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" [(ngModel)]="password" name="password" placeholder="Enter your password"
+              required />
+            <mat-hint *ngIf="password && !validatePassword()" class="password-requirements"
+              style="color: #dc3545 !important; margin-top: 2 rem;">
+              {{ getPasswordValidationMessage() }}
+            </mat-hint>
+            <mat-error *ngIf="password && !validatePassword()">
+              Password doesn't meet all requirements
+            </mat-error>
+          </mat-form-field>
+          <br>
+
+          <div class="button-container">
+            <button mat-raised-button color="primary" type="submit" class="custom-register-btn"
+              [disabled]="!validatePassword()">
+              Create Account
+            </button>
+          </div>
+        </div>
+
+        <p class="msg">{{ msg }}</p>
+      </form>
+    </mat-card>
+
+    <p class="login-link">
+      Already have an account? <a routerLink="/login" routerLinkActive="active">Sign in here</a>
+    </p>
+  </main>
+
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,166 @@
+<div class="profile-container">
+
+  <app-header [hideAuthButtons]="true" [logoutbutton]="true"></app-header>
+
+  <!-- Profile Content -->
+  <div class="profile-content">
+    <!-- User Information Card -->
+    <mat-card class="profile-info-card">
+      <mat-card-header>
+        <div class="profile-avatar">
+          <mat-icon class="avatar-icon">account_circle</mat-icon>
+        </div>
+        <div class="profile-title-section">
+          <mat-card-title>{{ user.name }}</mat-card-title>
+          <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
+        </div>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="user-details">
+          <div class="detail-row">
+            <mat-icon>person</mat-icon>
+            <div class="detail-content">
+              <span class="detail-label">Username</span>
+              <div class="detail-value-container">
+                <span class="detail-value" *ngIf="!editingUsername">{{ user.name }}</span>
+                <div class="username-edit-container" *ngIf="editingUsername">
+                  <mat-form-field appearance="outline" class="username-edit-field">
+                    <input matInput [(ngModel)]="editableUsername"
+                           (input)="onUsernameInput()"
+                           placeholder="Enter new username" 
+                           [class.error-input]="usernameTaken" />
+                  </mat-form-field>
+                  <div class="username-error" *ngIf="usernameTaken">
+                    {{ usernameError }}
+                  </div>
+                </div>
+
+                <div class="edit-actions">
+                  <button mat-icon-button class="edit-btn" *ngIf="!editingUsername" (click)="startEditingUsername()">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <div class="edit-buttons" *ngIf="editingUsername">
+                    <button mat-icon-button class="save-btn"
+                            (click)="saveUsername()"
+                            [disabled]="!editableUsername || editableUsername.trim() === '' || usernameTaken">
+                      <mat-icon>check</mat-icon>
+                    </button>
+                    <button mat-icon-button class="cancel-btn" (click)="cancelEditingUsername()">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="detail-row">
+            <mat-icon>email</mat-icon>
+            <div class="detail-content">
+              <span class="detail-label">Email Address</span>
+              <span class="detail-value">{{ user.email }}</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Change Password Section -->
+    <mat-card class="change-password-card">
+      <mat-card-header>
+        <mat-card-title>Security Settings</mat-card-title>
+        <mat-card-subtitle>Manage your account security</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="password-section">
+          <div class="password-header">
+            <div class="password-info">
+              <mat-icon>lock</mat-icon>
+              <div>
+                <h3>Password</h3>
+                <p>Keep your account secure with a strong password</p>
+              </div>
+            </div>
+            <button mat-raised-button color="primary" (click)="toggleChangePassword()">
+              <mat-icon>{{ showChangePassword ? 'cancel' : 'edit' }}</mat-icon>
+              {{ showChangePassword ? 'Cancel' : 'Change Password' }}
+            </button>
+          </div>
+
+          <!-- Change Password Form -->
+          <div class="password-form" *ngIf="showChangePassword">
+            <form [formGroup]="changePasswordForm" (ngSubmit)="onChangePassword()">
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Current Password</mat-label>
+                  <input matInput 
+                         [type]="hideCurrentPassword ? 'password' : 'text'"
+                         formControlName="currentPassword"
+                         placeholder="Enter your current password">
+                  <button mat-icon-button matSuffix 
+                          type="button"
+                          (click)="hideCurrentPassword = !hideCurrentPassword">
+                    <mat-icon>{{ hideCurrentPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                  </button>
+                  <mat-error *ngIf="changePasswordForm.get('currentPassword')?.invalid && changePasswordForm.get('currentPassword')?.touched">
+                    {{ getErrorMessage('currentPassword') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>New Password</mat-label>
+                  <input matInput 
+                         [type]="hideNewPassword ? 'password' : 'text'"
+                         formControlName="newPassword"
+                         placeholder="Enter your new password">
+                  <button mat-icon-button matSuffix 
+                          type="button"
+                          (click)="hideNewPassword = !hideNewPassword">
+                    <mat-icon>{{ hideNewPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                  </button>
+                  <mat-error *ngIf="changePasswordForm.get('newPassword')?.invalid && changePasswordForm.get('newPassword')?.touched">
+                    {{ getErrorMessage('newPassword') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Confirm New Password</mat-label>
+                  <input matInput 
+                         [type]="hideConfirmPassword ? 'password' : 'text'"
+                         formControlName="confirmPassword"
+                         placeholder="Confirm your new password">
+                  <button mat-icon-button matSuffix 
+                          type="button"
+                          (click)="hideConfirmPassword = !hideConfirmPassword">
+                    <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                  </button>
+                  <mat-error *ngIf="changePasswordForm.get('confirmPassword')?.invalid && changePasswordForm.get('confirmPassword')?.touched">
+                    {{ getErrorMessage('confirmPassword') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-actions">
+                <button mat-raised-button color="primary" 
+                        type="submit" 
+                        [disabled]="!changePasswordForm.valid">
+                  <mat-icon>save</mat-icon>
+                  Update Password
+                </button>
+                <button mat-stroked-button type="button" (click)="toggleChangePassword()">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

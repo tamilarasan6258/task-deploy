@@ -1,0 +1,91 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.task-card {
+    width: 100%;
+    max-width: 300px;
+    padding: 16px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #dcd3f7, #e8d9f1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+}
+
+.task-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+mat-card-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #004d40;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+/* Subtitle (due date + priority) */
+mat-card-subtitle {
+    font-size: 14px;
+    color: #00796b;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Due date styling */
+.due-date-label {
+    font-weight: 600;
+    color: #004d40;
+}
+
+.overdue-indicator {
+    color: #d32f2f;
+    font-weight: 700;
+    font-size: 12px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* Description/content styling */
+mat-card-content {
+    font-size: 15px;
+    color: #333;
+    line-height: 1.4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .task-card {
+        max-width: 100%;
+    }
+}
+
+.low {
+    border-left: 5px solid #81c784;
+}
+
+.medium {
+    border-left: 5px solid #ffb74d;
+}
+
+.high {
+    border-left: 5px solid #e57373;
+}
+
+.task-card.overdue {
+    border: 2px solid red;
+    background-color: #ffe5e5;
+}

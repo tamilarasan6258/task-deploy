@@ -1,0 +1,100 @@
+<div class="dialog-container" (click)="$event.stopPropagation()">
+  <!-- Close Button -->
+  <button class="close-btn" type="button" (click)="onCancel()" mat-icon-button>
+    <mat-icon>close</mat-icon>
+  </button>
+  
+  <!-- Header Section -->
+  <div class="dialog-header">
+    <h2 class="dialog-title">{{ data.project ? 'Edit Project' : 'Create New Project' }}</h2>
+    <p class="dialog-subtitle">{{ data.project ? 'Manage project information and details' : 'Create a new project with details and timeline' }}</p>
+    <div class="project-status-badge" *ngIf="data?.project">
+      <mat-icon>folder</mat-icon>
+      <span>Project</span>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="form-card">
+    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="project-form">
+      
+      <!-- Basic Information Section -->
+      <div class="form-section">
+        <h3 class="section-title">Basic Information</h3>
+        
+        <div class="input-row">
+          <!-- Project Name -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Project Name</mat-label>
+            <input #projectNameField matInput formControlName="projectName" required
+                   placeholder="Enter a descriptive project name"
+                   (input)="checkDuplicateName(projectNameField.value)" 
+                   (blur)="projectForm.get('projectName')?.markAsTouched()" />
+            <mat-icon matSuffix>assignment</mat-icon>
+            
+            <mat-error *ngIf="projectForm.get('projectName')?.hasError('required')">
+              Project name is required.
+            </mat-error>
+            <mat-error *ngIf="projectForm.get('projectName')?.hasError('invalidPattern')">
+              Invalid pattern: include letters and optionally numbers/symbols.
+            </mat-error>
+            <mat-error *ngIf="projectForm.get('projectName')?.hasError('duplicate')">
+              Project name already exists.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="input-row">
+          <!-- Description -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="projectDesc" rows="4"
+                     placeholder="Provide detailed description of the project"
+                     (blur)="projectForm.get('projectDesc')?.markAsTouched()"></textarea>
+            <mat-icon matSuffix>description</mat-icon>
+            
+            <mat-error *ngIf="projectForm.get('projectDesc')?.hasError('required')">
+              Description is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Project Details Section -->
+      <div class="form-section">
+        <h3 class="section-title">Project Details</h3>
+        
+        <div class="input-row">
+          <!-- Due Date -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Due Date</mat-label>
+            <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="dueDate"
+                   placeholder="Select project due date"
+                   (blur)="projectForm.get('dueDate')?.markAsTouched()" readonly />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            
+            <mat-error *ngIf="projectForm.get('dueDate')?.hasError('required')">
+              Due date is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <div class="action-group">
+          <button mat-stroked-button type="button" (click)="onCancel()" class="cancel-btn">
+            <mat-icon>close</mat-icon>
+            Cancel
+          </button>
+          <button mat-raised-button color="primary" type="submit" class="submit-btn"
+                  [disabled]="projectForm.invalid || !isChanged || nameExists">
+            <mat-icon>{{ data.project ? 'save' : 'add' }}</mat-icon>
+            {{ data.project ? 'Update Project' : 'Create Project' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

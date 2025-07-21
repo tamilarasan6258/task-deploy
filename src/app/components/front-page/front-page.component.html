@@ -1,0 +1,36 @@
+<!--Front page component - parent class of Header component-->
+
+<app-header [showSearch]="false" [showProfile]="false"></app-header>
+
+<!-- Mobile menu (only toggled on small screen) -->
+<nav class="mobile-nav" [class.open]="menuOpen">
+  <a routerLink="/login" routerLinkActive="active" class="login">Login</a>
+  <a routerLink="/register" routerLinkActive="active" class="register">Register</a>
+</nav>
+
+<section class="intro">
+  <h1>Effortless Task Management<br>for Individuals</h1><br>
+  <h3>Plan, prioritize, and progress — all in one place.</h3>
+  <p>Organize projects, tasks and stay on top of deadlines with a powerful, intuitive task management solution designed
+    to achieve your goals.</p>
+</section>
+
+<section class="feature" id="feature">
+  <div class="feature-left">
+    <div class="feature-card">One-stop solution for all your project and task management needs</div>
+    <div class="feature-card">Manage tasks and deadlines with ease</div>
+    <div class="feature-card">Personalized dashboard for all your projects</div>
+    <div class="feature-card">Create, update, delete, and view projects and tasks</div>
+    <div class="feature-card">Drag and drop tasks across statuses (To-Do, In Progress, Done, Backlog)</div>
+    <div class="feature-card">Filter tasks by priority and due dates</div>
+    <div class="feature-card">Keep track of progress of all your projects</div>
+  </div>
+
+  <div class="feature-right">
+    <h2>Track your task<br>progress with us</h2>
+    <p>Simplify your workflow and focus on what truly matters.<br>Let us help you turn tasks into achievements.</p>
+    <a routerLink="/register" routerLinkActive="active" class="cta-button">Get Started <span class="arrow">→</span></a>
+  </div>
+</section>
+
+<app-footer></app-footer>

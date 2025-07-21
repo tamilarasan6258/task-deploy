@@ -1,0 +1,9 @@
+<div class="container">
+  <mat-card class="task-card" [ngClass]="[task.priority]" [class.overdue]="isOverdue" (click)="handleClick()">
+    <mat-card-title>{{ task.taskName }}</mat-card-title>
+    <mat-card-subtitle *ngIf="task.dueDate">
+      <span class="due-date-label">Due:</span> {{ formatDueDate(task.dueDate) }}
+      <span *ngIf="isOverdue" class="overdue-indicator"> (OVERDUE)</span>
+    </mat-card-subtitle>
+  </mat-card>
+</div>

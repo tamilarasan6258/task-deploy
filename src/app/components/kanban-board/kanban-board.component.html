@@ -1,0 +1,122 @@
+<!-- Header -->
+<div class="main">
+
+
+
+  <app-header [showProfile]="true" [showhamburger]="true">
+  </app-header>
+
+  <app-loading-spinner  [isLoading]="isLoading"></app-loading-spinner>
+  
+  <div class="container">
+    <div class="task-header">
+      <h2 class="project-title">{{ projectName }}</h2>
+      <!-- Filters Section -->
+      <div class="filters-section" *ngIf="!isTaskListEmpty">
+        <div class="filters-header">
+          <mat-icon class="filter-icon">filter_list</mat-icon>
+          <h3 class="filters-title">Filters & Search</h3>
+          <button mat-icon-button class="filter-toggle" (click)="toggleFilters()">
+            <mat-icon>{{ filtersExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </button>
+        </div>
+
+        <form #filterForm="ngForm" (ngSubmit)="applyFilters()" novalidate class="filter-form"
+          [class.expanded]="filtersExpanded">
+          <div class="filter-controls">
+            <!-- Search Bar -->
+            <mat-form-field appearance="outline" class="search-field">
+              <mat-label>Search Tasks</mat-label>
+              <input matInput placeholder="Enter task name" [(ngModel)]="searchTerm" name="searchTerm"
+                (ngModelChange)="applyFilters()">
+              <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+
+            <!-- Priority Filter -->
+            <mat-form-field appearance="outline">
+              <mat-label>Priority</mat-label>
+              <mat-select name="priority" [(ngModel)]="selectedPriority" #priority="ngModel"
+                (ngModelChange)="applyFilters()">
+                <mat-option value="">All Priorities</mat-option>
+                <mat-option value="low">Low</mat-option>
+                <mat-option value="medium">Medium</mat-option>
+                <mat-option value="high">High</mat-option>
+              </mat-select>
+              <mat-icon matPrefix>priority_high</mat-icon>
+            </mat-form-field>
+
+            <!-- Date Range -->
+            <mat-form-field appearance="outline">
+              <mat-label>Start Date</mat-label>
+              <input matInput name="startDate" [(ngModel)]="startDate" [matDatepicker]="startPicker"
+                #startDateCtrl="ngModel" (ngModelChange)="onStartDateChange($event)" [max]="endDate">
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+              <mat-icon matPrefix>event</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>End Date</mat-label>
+              <input matInput name="endDate" [(ngModel)]="endDate" [matDatepicker]="endPicker" #endDateCtrl="ngModel"
+                (ngModelChange)="onEndDateChange($event)" [min]="startDate">
+              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+              <mat-icon matPrefix>event</mat-icon>
+              <mat-error *ngIf="dateValidationError">
+                <mat-icon class="error-icon">error</mat-icon>
+                End date must be greater than or equal to start date
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Chart Library Dropdown -->
+            <mat-form-field appearance="outline">
+              <mat-label>Summary Charts</mat-label>
+              <mat-select (selectionChange)="goToChartSummary($event.value)">
+                <mat-option value="echarts">ECharts</mat-option>
+                <mat-option value="chartjs">Chart.js</mat-option>
+                <mat-option value="highcharts">Highcharts</mat-option>
+              </mat-select>
+              <mat-icon matPrefix>bar_chart</mat-icon>
+            </mat-form-field>
+
+
+            <!-- Action Buttons -->
+            <div class="filter-actions">
+              <button mat-raised-button color="warn" type="button" (click)="clearFilters()" class="clear-btn">
+                <mat-icon>clear</mat-icon>
+                Clear Filters
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Kanban Columns -->
+    <div class="board">
+      <div class="column {{ status }}" *ngFor="let status of statuses" cdkDropList [id]="status"
+        [cdkDropListData]="tasks[status]" [cdkDropListConnectedTo]="dropListIds"
+        (cdkDropListDropped)="onDrop($event, status)">
+        <h3>
+          {{ status | titlecase }}
+          <button (click)="openAddTaskDialog(status)">+</button>
+        </h3>
+
+        <div *ngFor="let task of paginatedTasks[status]" cdkDrag>
+          <app-task-card [task]="task" (taskClick)="openTaskDetails($event)" />
+        </div>
+
+        <!-- Pagination Controls (only if tasks > 3) -->
+        <div class="pagination-controls" *ngIf="tasks[status].length > pageSize">
+          <button mat-icon-button (click)="prevPage(status)" [disabled]="currentPage[status] === 0">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+
+          <button mat-icon-button (click)="nextPage(status)"
+            [disabled]="currentPage[status] >= getTotalPages(tasks[status].length) - 1">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

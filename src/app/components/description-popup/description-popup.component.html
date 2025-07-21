@@ -1,0 +1,25 @@
+<div class="dialog-container" (click)="$event.stopPropagation()">
+  <!-- Close Button -->
+  <button class="close-btn" type="button" (click)="close()" mat-icon-button>
+    <mat-icon>close</mat-icon>
+  </button>
+  
+  <!-- Header Section -->
+  <div class="dialog-header">
+    <h2 class="dialog-title">{{ data.title || 'Description' }}</h2>
+    <p class="dialog-subtitle">Full description details</p>
+    <div class="description-badge">
+      <mat-icon>description</mat-icon>
+      <span>Full Text</span>
+    </div>
+  </div>
+
+  <!-- Content Card -->
+  <div class="content-card">
+    <div class="description-content">
+      <div class="description-text">
+        {{ data.description }}
+      </div>
+    </div>
+  </div>
+</div>

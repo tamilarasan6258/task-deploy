@@ -1,0 +1,250 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.logo-img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.auth-buttons a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 20px;
+}
+
+.auth-buttons .login {
+  border: 2px solid white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+  background-color: transparent;
+}
+
+.auth-buttons .login:hover {
+  background-color: white;
+  color: #0056b3;
+}
+
+.auth-buttons .register {
+  background-color: #28a745;
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+}
+
+.auth-buttons .register:hover {
+  background-color: #218838;
+}
+
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+}
+
+.profile-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 2.5rem;
+  right: 0;
+  background-color: white;
+  color: black;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 1001;
+  width: 150px;
+}
+
+.profile-option {
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.profile-icon {
+  font-size: 32px; /* increase to 36px, 40px, etc. as needed */
+  padding: 10px;
+  cursor: pointer;
+  color: white;
+}
+
+.profile-option:hover {
+  background-color: #f0f0f0;
+}
+
+.logout-btn {
+  background-color: #dc3545 !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logout-btn:hover {
+  background-color: #c82333 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+}
+
+.mobile-nav a {
+  color: white;
+  padding: 0.5rem 0;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.mobile-nav.open {
+  display: flex;
+}
+
+.header-search {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 300px;
+  margin: 0;
+}
+
+.header-search .search-field-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  width: 250px;
+  min-width: 200px;
+}
+
+.header-search .search-field-container:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.header-search .search-field-container:focus-within {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.header-search .search-icon {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.header-search .search-field {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: white;
+  padding: 0;
+  margin: 0;
+}
+
+.header-search .search-field::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Responsive Design*/
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+
+.mobile-nav {
+  margin-top: 8%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+}
+  
+.hamburger {
+  display: block;
+}
+
+.search-container {
+  display: none;
+}
+
+.header-search .search-field-container {
+  width: 180px;
+  min-width: 150px;
+  padding: 6px 12px;
+}
+
+.header-search .search-field {
+  font-size: 12px;
+}
+
+.header-search .search-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  }
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 1rem;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

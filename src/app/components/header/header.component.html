@@ -1,0 +1,60 @@
+<header class="navbar">
+  <!-- Left Section: Logo -->
+  <div class="navbar-left">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KanBoard Logo" class="logo-img" />
+      <span >KanBoard</span>
+    </div>
+  </div>
+
+  <!-- Center Section: Search -->
+  <div class="navbar-center" *ngIf="showSearch">
+    <div class="header-search">
+      <div class="search-field-container">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input type="text" class="search-field"
+               placeholder="Search Projects..."
+               [(ngModel)]="searchTerm"
+               (ngModelChange)="onSearch.emit(searchTerm)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Section: Auth/Profile -->
+  <div class="navbar-right">
+    <div class="auth-buttons" *ngIf="!showProfile && !hideAuthButtons">
+      <a routerLink="/login" class="login">Login</a>
+      <a routerLink="/register" class="register">Register</a>
+    </div>
+
+    <div *ngIf="logoutbutton">
+      <button mat-raised-button color="warn" class="logout-btn" (click)="logout($event)">
+      <mat-icon>logout</mat-icon>
+      Logout
+    </button>
+    </div>
+
+    <div class="profile-container desktop-only" *ngIf="showProfile" (click)="toggleProfileMenu($event)">
+      <mat-icon class="profile-icon">account_circle</mat-icon>
+      <div *ngIf="profileOpen" class="profile-dropdown">
+        <div class="profile-option" (click)="goToProfile($event)">
+          <mat-icon class="option-icon">person</mat-icon>
+          <span>Profile</span>
+        </div>
+        <div class="profile-option logout" (click)="logout($event)">
+          <mat-icon class="option-icon">logout</mat-icon>
+          <span>Logout</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hamburger mobile-only" (click)="menuOpen = !menuOpen"  *ngIf="showhamburger">☰</div>
+  </div>
+</header>
+
+<nav class="mobile-nav" [class.open]="menuOpen" >
+  <a routerLink="/login" *ngIf="!showProfile">Login</a>
+  <a routerLink="/register" *ngIf="!showProfile">Register</a>
+  <a (click)="goToProfile($event)" *ngIf="showProfile">Profile</a>
+  <a (click)="logout($event)" *ngIf="showProfile">Logout</a>
+</nav>

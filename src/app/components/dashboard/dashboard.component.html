@@ -1,0 +1,258 @@
+<div class="main">
+  <app-header
+  [showSearch]="true"
+  [showProfile]="true"
+  [showhamburger]="true"
+  (onSearch)="searchTerm = $event; applyFilters()"
+  (onMenuToggle)="toggleMobileMenu()">
+  </app-header>
+  
+<app-loading-spinner  [isLoading]="isLoading"></app-loading-spinner>
+
+
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <!-- Side Panel for Filters -->
+    <div class="side-panel" *ngIf="projects && projects.length > 0">
+      <h3 class="panel-title">Filters</h3>
+      
+      <!-- Status Filter Buttons -->
+      <div class="filter-group">
+        <h4 class="filter-group-title">Status</h4>
+        <button type="button" class="filter-btn" [class.active]="selectedStatus === 'all'"
+                (click)="setStatusFilter('all')">
+          All ({{ getProjectCounts().all }})
+        </button>
+        <button type="button" class="filter-btn" [class.active]="selectedStatus === 'incomplete'"
+                (click)="setStatusFilter('incomplete')">
+          Incomplete ({{ getProjectCounts().incomplete }})
+        </button>
+        <button type="button" class="filter-btn" [class.active]="selectedStatus === 'completed'"
+                (click)="setStatusFilter('completed')">
+          Completed ({{ getProjectCounts().completed }})
+        </button>
+      </div>
+
+      <!-- Date Filter -->
+      <div class="filter-group">
+        <h4 class="filter-group-title">Date Range</h4>
+        <button type="button" class="filter-btn date-toggle" (click)="toggleDateMode()" 
+                [class.active]="isDateMode">
+          <mat-icon>date_range</mat-icon>
+          Filter by Date
+        </button>
+        
+        <!-- Date Range Panel -->
+        <div class="date-panel" *ngIf="isDateMode">
+          <div class="date-input-group">
+            <label>From:</label>
+            <input type="date" class="date-input" 
+                   [(ngModel)]="startDateString" 
+                   (ngModelChange)="onStartDateChange($event)"
+                   [max]="endDateString || null">
+          </div>
+          <div class="date-input-group">
+            <label>To:</label>
+            <input type="date" class="date-input" 
+                   [(ngModel)]="endDateString" 
+                   (ngModelChange)="onEndDateChange($event)"
+                   [min]="startDateString || null">
+            <div class="date-error" *ngIf="dateValidationError">
+              <mat-icon class="error-icon">error</mat-icon>
+              <span>End date must be greater than or equal to start date</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clear Filters Button -->
+      <div class="filter-group">
+        <button type="button" class="clear-filters-btn" (click)="clearFilters()">
+          <mat-icon>clear</mat-icon>
+          Clear All Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      <!-- Fixed Header with Title and New Project Button - Only show when projects exist -->
+      <div class="content-header" *ngIf="projects && projects.length > 0">
+        <h2 class="project-title">Project Dashboard</h2>
+        <button mat-raised-button color="primary" class="new-project-btn" (click)="openCreateDialog()">
+          <mat-icon>add</mat-icon>
+          New Project
+        </button>
+      </div>
+      <!-- Alternative header when no projects exist -->
+      <div class="content-header" *ngIf="!projects || projects.length === 0">
+        <h2 class="project-title"></h2>
+        <button mat-raised-button color="primary" class="new-project-btn" (click)="openCreateDialog()">
+          <mat-icon>add</mat-icon>
+          Create Your First Project
+        </button>
+      </div>
+
+      <!-- Mobile Filters Section - Below project dashboard header -->
+      <div class="mobile-filters-section mobile-only" *ngIf="projects && projects.length > 0">
+        <div class="mobile-filters-header">
+          <mat-icon class="filter-icon">filter_list</mat-icon>
+          <h3 class="mobile-filters-title">Filters & Search</h3>
+          <button mat-icon-button class="mobile-filter-toggle" (click)="toggleMobileFilters()">
+            <mat-icon>{{ mobileFiltersExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </button>
+        </div>
+
+        <form class="mobile-filter-form" [class.expanded]="mobileFiltersExpanded">
+          <div class="mobile-filter-controls">
+            <!-- Status Filter Row -->
+            <div class="filter-control-row">
+              <button 
+                type="button"
+                class="mobile-status-btn" 
+                [class.active]="selectedStatus === 'all'"
+                (click)="setStatusFilter('all')">
+                All ({{ getProjectCounts().all }})
+              </button>
+              <button 
+                type="button"
+                class="mobile-status-btn" 
+                [class.active]="selectedStatus === 'incomplete'"
+                (click)="setStatusFilter('incomplete')">
+                Incomplete ({{ getProjectCounts().incomplete }})
+              </button>
+              <button 
+                type="button"
+                class="mobile-status-btn" 
+                [class.active]="selectedStatus === 'completed'"
+                (click)="setStatusFilter('completed')">
+                Completed ({{ getProjectCounts().completed }})
+              </button>
+            </div>
+
+            <!-- Date Filter Row -->
+            <div class="filter-control-row">
+              <div class="date-input-wrapper">
+                <label class="date-label">From:</label>
+                <input 
+                  type="date" 
+                  class="mobile-date-input" 
+                  [(ngModel)]="startDateString" 
+                  name="startDate"
+                  (ngModelChange)="onStartDateChange($event)"
+                  [max]="endDateString || null">
+              </div>
+              <div class="date-input-wrapper">
+                <label class="date-label">To:</label>
+                <input 
+                  type="date" 
+                  class="mobile-date-input" 
+                  [(ngModel)]="endDateString" 
+                  name="endDate"
+                  (ngModelChange)="onEndDateChange($event)"
+                  [min]="startDateString || null">
+              </div>
+            </div>
+
+            <!-- Date Error Row -->
+            <div class="filter-control-row" *ngIf="dateValidationError">
+              <div class="mobile-date-error">
+                <mat-icon class="error-icon">error</mat-icon>
+                <span>End date must be greater than or equal to start date</span>
+              </div>
+            </div>
+
+            <!-- Clear Filters Row -->
+            <div class="filter-control-row">
+              <button type="button" class="mobile-clear-btn" (click)="clearFilters()">
+                <mat-icon>clear</mat-icon>
+                Clear All Filters
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- Scrollable Projects Area -->
+      <div class="projects-scroll-area">
+        <!-- No projects message - show different messages based on whether there are any projects at all -->
+        <div *ngIf="projects && projects.length === 0" class="no-projects-msg">
+          <div class="welcome-message">
+            <mat-icon style="font-size: 48px; color: #666;">folder_open</mat-icon>
+            <h3>No Projects Yet</h3>
+            <p>Get started by creating your first project!</p>
+          </div>
+        </div>
+        <div *ngIf="projects && projects.length > 0 && FilteredProjects().length === 0" class="no-projects-msg">
+          <b>No projects found matching your filters</b>
+        </div>
+
+        <!-- Project Cards Grid -->
+        <div class="project-container" *ngIf="FilteredProjects().length > 0">
+            <div class="project-card" *ngFor="let project of paginatedProjects" (click)="onView(project._id, project.projectName, project.dueDate)">            
+              <div class="card-header">
+              <h3 class="project-name">{{ project.projectName }}</h3>
+              <div [ngClass]="getDueDateClass(project.dueDate)" class="due-date">
+                <mat-icon class="date-icon">event</mat-icon>
+                <span class="date-text">{{ project.dueDate | date: 'MMM d, y' }}</span>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="project-description">
+                <p class="description-text">
+                  {{ project.projectDesc.length > 80 ? (project.projectDesc | slice:0:80) + '...' : project.projectDesc }}
+                  <span *ngIf="project.projectDesc.length > 80" class="read-toggle" (click)="openDescriptionPopup(project, $event)">
+                    Show more
+                  </span>
+                </p>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="progress-container">
+                <p class="progress-label">Completed status: {{ calculateProgress(project) | number:'1.0-0' }}%</p>
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="calculateProgress(project)"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <div class="card-actions">
+                <button class="action-btn edit-btn" matTooltip="Edit Project" (click)="editProject(project); $event.stopPropagation()">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button class="action-btn delete-btn" matTooltip="Delete Project" (click)="confirmDelete(project); $event.stopPropagation()">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      
+      <!-- Pagination Controls - Fixed at bottom -->
+      <div class="pagination-wrapper" *ngIf="FilteredProjects().length > 0">
+        <div class="pagination-controls">
+          <button class="pagination-btn prev-btn" (click)="changePage('prev')" [disabled]="currentPage === 1">
+            <mat-icon>chevron_left</mat-icon>
+            <span>Previous</span>
+          </button>
+          
+          <div class="page-numbers">
+           
+            <div class="page-indicator">
+              <span class="current-page">{{ currentPage }}</span>
+              <span class="total-pages">/ {{ totalPages }}</span>
+            </div>
+          </div>
+          
+          <button class="pagination-btn next-btn" (click)="changePage('next')" [disabled]="currentPage === totalPages">
+            <span>Next</span>
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

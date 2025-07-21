@@ -1,0 +1,896 @@
+/* General Body and Page Structure */
+  body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+    color: #343a40;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    flex-grow: 1;
+  }
+
+  .app-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .app-header .left {
+    display: flex;
+    align-items: center;
+  }
+
+  .app-header .logo-img {
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .app-header h2 {
+    color: white;
+    ;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .app-header h2 span {
+    color: white;
+  }
+
+  .app-header .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    margin-right: 35px;
+    transition: color 0.3s ease, transform 0.2s ease;
+  }
+
+  .app-header .nav-links a:hover {
+    color: #cce5ff;
+    transform: translateY(-2px);
+  }
+
+  .app-header .profile {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+
+  .app-header .profile:hover {
+    transform: translateY(-2px);
+  }
+
+
+  .mat-mdc-menu-panel {
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    overflow: hidden;
+  }
+
+  .mat-mdc-menu-item {
+    color: #343a40;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mat-mdc-menu-item:hover:not(:disabled) {
+    background-color: #f0f0f0;
+  }
+
+  .mat-mdc-menu-item mat-icon {
+    color: #6c757d;
+  }
+
+  .mat-mdc-menu-item:disabled {
+    opacity: 0.7;
+    cursor: default;
+    color: #adb5bd;
+  }
+
+  .mat-mdc-menu-item:has(mat-icon[fontIcon="logout"]) {
+    color: #dc3545;
+    font-weight: 600;
+  }
+
+  .mat-mdc-menu-item:has(mat-icon[fontIcon="logout"]):hover {
+    background-color: #fbecec;
+  }
+
+  .container {
+    flex-grow: 1;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    margin-top: 40px;
+  }
+
+  .task-header {
+    margin-bottom: 2rem;
+  }
+
+  .project-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-text-dark);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .filters-section {
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--shadow-base);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    border: 1px solid var(--color-border-light);
+  }
+
+  .filters-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, var(--color-primary-light), #ffffff);
+    border-bottom: 1px solid var(--color-border-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .filters-header:hover {
+    background: linear-gradient(135deg, #dbeafe, #f8fafc);
+  }
+
+  .filter-icon {
+    color: var(--color-primary);
+    margin-right: 12px;
+    font-size: 24px;
+  }
+
+  .filters-title {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-dark);
+  }
+
+  .filter-toggle {
+    color: var(--color-primary);
+    transition: transform 0.3s ease;
+  }
+
+  .filter-form {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .filter-form.expanded {
+    max-height: 800px;
+  }
+
+  .filter-controls {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 16px;
+    padding: 20px;
+    align-items: end;
+  }
+
+  .search-field {
+    grid-column: 1;
+  }
+
+  .filter-actions {
+    grid-column: 5;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .clear-btn {
+    background: linear-gradient(135deg, var(--color-warning), var(--color-warning-dark)) !important;
+    color: white !important;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    font-weight: 600;
+  }
+
+  .filter-controls mat-form-field {
+    flex: 1;
+    min-width: 150px;
+  }
+
+  /* Angular Material Form Field Overrides (Consistent with previous pages) */
+  .filter-controls .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: #f5f7fa;
+    /* Slightly lighter background for fields */
+    border-radius: 8px;
+    /* Rounded corners for input fields */
+    padding: 0.75em 0.75em 0 0.75em;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .filter-controls .mat-form-field-appearance-fill.mat-focused .mat-form-field-flex {
+    background-color: #e6f7ff;
+    /* Light blue tint when focused */
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    /* Subtle blue glow */
+  }
+
+  .filter-controls .mat-form-field-label {
+    color: #6c757d !important;
+    /* Gray for labels */
+    font-size: 1rem;
+  }
+
+  .filter-controls .mat-input-element,
+  .filter-controls .mat-select-value-text {
+    color: #343a40;
+    /* Darker gray for input/selected text */
+    font-size: 1rem;
+  }
+
+  .filter-controls .mat-form-field-appearance-fill.mat-focused .mat-form-field-label {
+    color: #007bff !important;
+    /* Primary blue when focused */
+  }
+
+  /* Datepicker Toggle Icon Color */
+  .filter-controls .mat-datepicker-toggle .mat-icon-button {
+    color: #007bff;
+    /* Primary blue for the datepicker icon */
+    transition: color 0.2s ease;
+  }
+
+  .filter-controls .mat-datepicker-toggle .mat-icon-button:hover {
+    color: #0056b3;
+  }
+
+  /* Clear Filters Button */
+  .filter-controls button[color="warn"] {
+    background-color: #ffc107 !important;
+    /* Warning yellow for clear button */
+    color: #343a40 !important;
+    /* Dark text for contrast */
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease !important;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1) !important;
+    margin-bottom: 13%;
+    /* Adjust alignment with form fields */
+  }
+
+  .filter-controls button[color="warn"]:hover {
+    background-color: #e0a800 !important;
+    /* Darker yellow on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15) !important;
+  }
+
+
+  /* --- Kanban Board --- */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    /* Responsive columns */
+    gap: 25px;
+    /* Space between columns */
+    align-items: flex-start;
+    /* Align columns to the top */
+  }
+
+  .column {
+    background-color: #e9ecef;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+    /* Minimum height for columns */
+  }
+
+  .column h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #343a40;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .column h3 button {
+    background-color: #28a745;
+    /* Green for add task button */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    /* Circular button */
+    width: 30px;
+    height: 30px;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .column h3 button:hover {
+    background-color: #218838;
+    /* Darker green on hover */
+    transform: scale(1.05);
+  }
+
+  /* Specific Column Colors/Borders */
+  .column.to-do {
+    border-top: 5px solid #007bff;
+    /* Blue for To-Do */
+  }
+
+  .column.in-progress {
+    border-top: 5px solid #ffc107;
+    /* Orange for In Progress */
+  }
+
+  .column.done {
+    border-top: 5px solid #28a745;
+    /* Green for Done */
+  }
+
+  .column.backlog {
+    border-top: 5px solid #6c757d;
+    /* Gray for Backlog */
+  }
+
+
+
+  /* Task Card (app-task-card) - assuming it has its own internal styling, but these are for its container */
+  .column .cdk-drag {
+
+    border-radius: 8px;
+
+    margin-bottom: 15px;
+    /* Space between tasks */
+
+  }
+
+
+  /* --- Pagination Controls (within columns) --- */
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    /* Push to the bottom of the column */
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    gap: 5px;
+  }
+
+  .pagination-controls button {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    /* Primary blue for pagination icons */
+    font-size: 1.5rem;
+    /* Icon size */
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pagination-controls button:hover:not(:disabled) {
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    color: #0056b3;
+  }
+
+  .pagination-controls button:disabled {
+    color: #adb5bd;
+    /* Lighter gray when disabled */
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+
+  /* --- Responsive Design --- */
+  @media (max-width: 992px) {
+    .app-header {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .app-header .left {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .app-header .nav-links {
+      margin-top: 1rem;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .app-header .nav-links a {
+      margin: 0.5rem 15px;
+    }
+
+    .app-header .profile {
+      margin-top: 1rem;
+    }
+
+    .container {
+      padding: 1.5rem;
+    }
+
+    .project-title {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-controls {
+      flex-direction: column;
+      /* Stack filters vertically */
+      align-items: stretch;
+      /* Stretch to full width */
+      width: 90%;
+      padding: 1rem;
+    }
+
+    /* .filter-controls mat-form-field { */
+      /* min-width: unset; */
+      /* Remove min-width */
+      /* max-width: unset; */
+      /* Remove max-width */
+      /* width: 90%; */
+      /* Take full width */
+    /* } */
+
+    .filter-controls button[color="warn"] {
+      width: 100%;
+      margin-top: 0;
+      /* Adjust margin */
+      margin-bottom: 10%;
+    }
+
+    .board {
+      grid-template-columns: 1fr;
+      /* Stack columns on smaller screens */
+      gap: 1.5rem;
+    }
+
+    .column {
+      min-height: auto;
+      /* Allow height to adjust */
+    }
+  }
+
+  @media (max-width: 600px) {
+    .app-header h2 {
+      font-size: 1.5rem;
+    }
+
+    .app-header .logo-img {
+      height: 30px;
+    }
+
+    .app-header .nav-links a {
+      font-size: 0.9rem;
+      margin: 0.3rem 8px;
+    }
+
+    .app-header .profile-icon {
+      font-size: 2rem;
+    }
+
+    .container {
+      padding: 1rem;
+    }
+
+    .project-title {
+      font-size: 1.8rem;
+    }
+
+
+    .filter-controls {
+      padding: 0.8rem;
+    }
+
+    .column h3 {
+      font-size: 1.2rem;
+    }
+
+    .column h3 button {
+      width: 28px;
+      height: 28px;
+      font-size: 1.3rem;
+    }
+  }
+
+
+
+  .app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 96%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+
+  .profile-container {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease-out;
+    margin-left: 20px;
+  }
+
+  .profile-icon {
+    font-size: 2.5rem;
+    padding: 15px;
+    margin-bottom: 7px;
+    margin-right: 10px;
+    color: #ffffff;
+  }
+
+  .profile-dropdown {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #ffffff;
+    color: #333;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    min-width: 180px;
+    z-index: 999;
+    padding: 10px 0;
+    margin-top: 30px;
+  }
+
+
+  .logout {
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+
+
+
+
+
+
+
+  
+.profile-option {
+  padding: 12px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-weight: 500;
+}
+
+.profile-option:last-child {
+  border-bottom: none;
+}
+
+.profile-option:hover {
+  background-color: #f8f9fa;
+  transform: translateX(2px);
+  color: #0056b3;
+}
+
+.profile-option .option-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #6c757d;
+  transition: color 0.3s ease;
+}
+
+.profile-option:hover .option-icon {
+  color: #0056b3;
+}
+
+.logout {
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.profile-option.logout {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.profile-option.logout:hover {
+  background-color: #ffebeb;
+}
+
+  /* ======= Responsive Enhancements ======= */
+
+  /* Tablet View: 768px - 991px */
+  @media (max-width: 991px) {
+    .app-header {
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .project-title {
+      font-size: 2rem;
+    }
+
+    .filter-controls {
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .search-field {
+      grid-column: 1 / -1;
+    }
+
+    .filter-actions {
+      grid-column: 1 / -1;
+      justify-content: center;
+    }
+
+    .board {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .column {
+      min-height: auto;
+    }
+  }
+
+  /* Mobile View: <= 600px */
+  @media (max-width: 600px) {
+    .app-header {
+      padding: 0.8rem;
+    }
+
+    .app-header h2 {
+      font-size: 1.3rem;
+      text-align: center;
+    }
+
+    .app-header .logo-img {
+      height: 28px;
+    }
+
+    .app-header .profile-icon {
+      font-size: 2rem;
+      padding: 10px;
+    }
+
+    .container {
+      padding: 1rem;
+    }
+
+    .project-title {
+      font-size: 1.5rem;
+    }
+
+    .filters-section {
+      margin: 0 -1rem 2rem -1rem;
+      border-radius: 0;
+      padding: 1rem;
+      min-height: 400px;
+    }
+    
+    .filter-form.expanded {
+      max-height: 1000px !important;
+      height: auto !important;
+      overflow-y: auto !important;
+      transition: max-height 0.5s ease !important;
+      min-height: 400px !important;
+    }
+
+    .filter-controls {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      padding: 15px !important;
+      gap: 15px !important;
+      width: 80% !important;
+      max-width: 320px !important;
+      margin: 0 auto !important;
+      grid-template-columns: none !important;
+    }
+
+    .filter-controls mat-form-field {
+      font-size: 0.8rem !important;
+      width: 100% !important;
+      max-width: 280px !important;
+      margin-bottom: 12px !important;
+    }
+
+    .search-field {
+      width: 100% !important;
+      max-width: 280px !important;
+      margin-bottom: 12px !important;
+    }
+
+    .filter-actions {
+      width: 100% !important;
+      display: flex !important;
+      justify-content: center !important;
+      margin-top: 16px !important;
+    }
+
+.filter-controls .mat-form-field-wrapper {
+  padding: 0;
+}
+
+.filter-controls .mat-form-field-flex {
+  padding: 0 8px !important;
+}
+
+.filter-controls .mat-input-element,
+.filter-controls .mat-select-value-text {
+  /* font-size: 0.85rem; */
+  font-size: 14px;
+}
+
+    .clear-btn {
+      max-width: 160px !important;
+      width: 100% !important;
+      font-size: 0.85rem !important;
+      padding: 8px 12px !important;
+    }
+
+    /* More aggressive Angular Material form field overrides */
+    .filter-controls .mat-mdc-form-field {
+      width: 100% !important;
+      max-width: 250px !important;
+    }
+
+    .filter-controls .mat-mdc-text-field-wrapper {
+      width: 100% !important;
+      max-width: 250px !important;
+    }
+
+    .filter-controls .mat-mdc-form-field-flex {
+      width: 100% !important;
+      max-width: 250px !important;
+    }
+
+    .filter-controls .mat-mdc-form-field-infix {
+      width: 100% !important;
+      max-width: 220px !important;
+      min-width: 0 !important;
+    }
+
+    .search-field .mat-mdc-form-field,
+    .search-field .mat-mdc-text-field-wrapper,
+    .search-field .mat-mdc-form-field-flex,
+    .search-field .mat-mdc-form-field-infix {
+      width: 100% !important;
+      max-width: 250px !important;
+    }
+
+    /* Force container to be narrower */
+    .filters-section {
+      max-width: 350px !important;
+      margin: 0 auto 2rem auto !important;
+    }
+
+    .board {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .column {
+      padding: 0.8rem;
+    }
+
+    .column h3 {
+      font-size: 1.1rem;
+    }
+  }
+
+  .column h3 button {
+    width: 26px;
+    height: 26px;
+    font-size: 1.2rem;
+  }
+
+  .pagination-controls {
+    font-size: 1.2rem;
+  }
+
+  .profile-dropdown {
+    right: 10px;
+    top: 50px;
+    width: 90%;
+  }
+
+  .profile-option {
+    font-size: 0.95rem;
+    padding: 8px 15px;
+  }
+
+
+
+  .overdue {
+    border: 2px solid red;
+    background-color: #ffe6e6;
+    border-radius: 8px;
+    padding: 4px;
+  }
+
+
+
+
+  div.overdue {
+    border: 2px solid red !important;
+    background-color: #ffe6e6 !important;
+    border-radius: 8px;
+    padding: 4px;
+  }
+
+   .profile-icon {
+    font-size: 2rem;
+    padding: 10px;
+  }
+
+  .profile-dropdown {
+    right: 10px;
+    top: 50px;
+    width: 90%;
+  }
+
+  .profile-option {
+    font-size: 0.95rem;
+    padding: 8px 15px;
+  }

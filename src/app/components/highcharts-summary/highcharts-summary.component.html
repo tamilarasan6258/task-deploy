@@ -1,0 +1,60 @@
+<div class="dashboard-container">
+  <app-header [showProfile]="true" [showhamburger]="true"></app-header>
+
+  <div class="dashboard-content">
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">{{ projectName }} - Analytics</h1>
+      <p class="dashboard-subtitle">Task analytics and insights for this project</p>
+    </div>
+
+    <div class="dashboard-cards">
+      <div class="card total-tasks">
+        <div class="card-icon"><mat-icon>assignment</mat-icon></div>
+        <div class="card-content">
+          <h3>Total Tasks</h3>
+          <p class="card-number">{{ totalTasks }}</p>
+        </div>
+      </div>
+      <div class="card incomplete-tasks">
+        <div class="card-icon"><mat-icon>pending_actions</mat-icon></div>
+        <div class="card-content">
+          <h3>Incomplete Tasks</h3>
+          <p class="card-number">{{ incompleteTasks }}</p>
+        </div>
+      </div>
+      <div class="card completed-tasks">
+        <div class="card-icon"><mat-icon>check_circle</mat-icon></div>
+        <div class="card-content">
+          <h3>Completed Tasks</h3>
+          <p class="card-number">{{ completedTasks }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-section" *ngIf="!loading">
+      <div class="chart-container">
+        <highcharts-chart [Highcharts]="Highcharts" [options]="statusChartOptions" style="width: 100%; height: 100%; display: block;"></highcharts-chart>
+      </div>
+      <div class="chart-container">
+        <highcharts-chart [Highcharts]="Highcharts" [options]="priorityChartOptions" style="width: 100%; height: 100%; display: block;"></highcharts-chart>
+      </div>
+      <div class="chart-container full-width">
+        <highcharts-chart [Highcharts]="Highcharts" [options]="dueChartOptions" style="width: 100%; height: 100%; display: block;"></highcharts-chart>
+      </div>
+      <div class="chart-container full-width">
+        <highcharts-chart [Highcharts]="Highcharts" [options]="areaSplineChartOptions" style="width: 100%; height: 100%; display: block;"></highcharts-chart>
+      </div>
+    </div>
+
+    <div class="loading-container" *ngIf="loading">
+      <mat-spinner></mat-spinner>
+      <p>Loading dashboard data...</p>
+    </div>
+
+    <div class="no-data-container" *ngIf="!loading && totalTasks === 0">
+      <mat-icon class="no-data-icon">inbox</mat-icon>
+      <h3>No Tasks Found</h3>
+      <p>Create your first project and add tasks to see dashboard data.</p>
+    </div>
+  </div>
+</div>

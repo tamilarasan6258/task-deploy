@@ -1,0 +1,181 @@
+<div class="dialog-container" (click)="$event.stopPropagation()">
+  <!-- Close Button -->
+  <button class="close-btn" type="button" (click)="close()" mat-icon-button>
+    <mat-icon>close</mat-icon>
+  </button>
+  
+  <!-- Header Section -->
+  <div class="dialog-header">
+    <h2 class="dialog-title">Task Details</h2>
+    <p class="dialog-subtitle">View and manage task information</p>
+    <div class="task-status-badge" [ngClass]="'status-' + taskForm.get('status')?.value">
+      <mat-icon>{{getStatusIcon(taskForm.get('status')?.value)}}</mat-icon>
+      <span>{{taskForm.get('status')?.value | titlecase}}</span>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="form-card">
+    <form [formGroup]="taskForm" class="task-form">
+      
+      <!-- Basic Information Section -->
+      <div class="form-section">
+        <h3 class="section-title">Basic Information</h3>
+        
+        <div class="input-row">
+          <!-- Task Name -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Task Name</mat-label>
+            <input matInput formControlName="taskName" [readonly]="!editable"
+                   placeholder="Enter a descriptive task name" />
+            <mat-icon matSuffix>{{editable ? 'edit' : 'task'}}</mat-icon>
+            <mat-error *ngIf="taskForm.get('taskName')?.touched && taskForm.get('taskName')?.hasError('required')">
+              Task name is required.
+            </mat-error>
+            <mat-error *ngIf="taskForm.get('taskName')?.touched && taskForm.get('taskName')?.hasError('invalidPattern')">
+              Invalid pattern: include letters and optionally numbers/symbols.
+            </mat-error>
+            <mat-error *ngIf="duplicateNameError">
+              Task name already exists.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="input-row">
+          <!-- Description -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="taskDesc" [readonly]="!editable"
+                     placeholder="Provide detailed description of the task" rows="4"></textarea>
+            <mat-icon matSuffix>description</mat-icon>
+            <mat-error *ngIf="taskForm.get('taskDesc')?.touched && taskForm.get('taskDesc')?.hasError('required')">
+              Description is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Task Details Section -->
+      <div class="form-section">
+        <h3 class="section-title">Task Details</h3>
+        
+        <div class="input-row row-split">
+          <!-- Due Date -->
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Due Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dueDate" 
+                   [min]="minDate" [max]="maxDate || null" [matDatepickerFilter]="dateFilter" 
+                   [readonly]="!editable" readonly />
+            <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="!editable"></mat-datepicker-toggle>
+            <mat-datepicker #picker [disabled]="!editable"></mat-datepicker>
+            <mat-error *ngIf="taskForm.get('dueDate')?.touched && taskForm.get('dueDate')?.hasError('required')">
+              Due date is required.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Priority -->
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Priority Level</mat-label>
+            <mat-select formControlName="priority" [disabled]="!editable">
+              <mat-select-trigger>
+                <span *ngIf="taskForm.get('priority')?.value === 'low'">Low Priority</span>
+                <span *ngIf="taskForm.get('priority')?.value === 'medium'">Medium Priority</span>
+                <span *ngIf="taskForm.get('priority')?.value === 'high'">High Priority</span>
+              </mat-select-trigger>
+              <mat-option value="low">
+                <div class="priority-option low">
+                  <mat-icon>keyboard_arrow_down</mat-icon>
+                  <span>Low Priority</span>
+                </div>
+              </mat-option>
+              <mat-option value="medium">
+                <div class="priority-option medium">
+                  <mat-icon>remove</mat-icon>
+                  <span>Medium Priority</span>
+                </div>
+              </mat-option>
+              <mat-option value="high">
+                <div class="priority-option high">
+                  <mat-icon>keyboard_arrow_up</mat-icon>
+                  <span>High Priority</span>
+                </div>
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>flag</mat-icon>
+            <mat-error *ngIf="taskForm.get('priority')?.touched && taskForm.get('priority')?.hasError('required')">
+              Priority is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="input-row">
+          <!-- Status -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Task Status</mat-label>
+            <mat-select formControlName="status" [disabled]="!editable">
+              <mat-select-trigger>
+                <span *ngIf="taskForm.get('status')?.value === 'backlog'">Backlog</span>
+                <span *ngIf="taskForm.get('status')?.value === 'to-do'">To-do</span>
+                <span *ngIf="taskForm.get('status')?.value === 'in-progress'">In Progress</span>
+                <span *ngIf="taskForm.get('status')?.value === 'done'">Done</span>
+              </mat-select-trigger>
+              <mat-option value="backlog">
+                <div class="status-option backlog">
+                  <mat-icon>inventory_2</mat-icon>
+                  <span>Backlog</span>
+                </div>
+              </mat-option>
+              <mat-option value="to-do">
+                <div class="status-option to-do">
+                  <mat-icon>list</mat-icon>
+                  <span>To-do</span>
+                </div>
+              </mat-option>
+              <mat-option value="in-progress">
+                <div class="status-option in-progress">
+                  <mat-icon>play_circle</mat-icon>
+                  <span>In Progress</span>
+                </div>
+              </mat-option>
+              <mat-option value="done">
+                <div class="status-option done">
+                  <mat-icon>check_circle</mat-icon>
+                  <span>Done</span>
+                </div>
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>track_changes</mat-icon>
+            <mat-error *ngIf="taskForm.get('status')?.touched && taskForm.get('status')?.hasError('required')">
+              Status is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <button mat-stroked-button color="warn" type="button" (click)="deleteTask()" class="delete-btn">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+        <div class="action-group">
+          <button mat-stroked-button type="button" (click)="close()" class="cancel-btn">
+            <mat-icon>close</mat-icon>
+            Close
+          </button>
+          <button mat-raised-button color="primary" type="button" (click)="enableEdit()" 
+                  *ngIf="!editable" class="edit-btn">
+            <mat-icon>edit</mat-icon>
+            Edit
+          </button>
+          <button mat-raised-button color="primary" type="button" (click)="updateTask()" 
+                  *ngIf="editable" class="submit-btn"
+                  [disabled]="duplicateNameError || !taskForm.valid || !hasChanges()">
+            <mat-icon>save</mat-icon>
+            Update
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

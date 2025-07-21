@@ -1,0 +1,94 @@
+<div class="dashboard-container">
+  <app-header
+    [showProfile]="true"
+    [showhamburger]="true">
+  </app-header>
+
+  <div class="main-content">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+       <h1 class="dashboard-title">{{ projectName }} - Analytics</h1>
+      <p class="dashboard-subtitle">Task analytics and insights for this project</p>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="stats-cards">
+      <mat-card class="stat-card total-tasks">
+        <mat-card-content>
+          <div class="card-content">
+            <div class="card-icon">
+              <mat-icon>assignment</mat-icon>
+            </div>
+            <div class="card-info">
+              <h3 class="card-number">{{ taskStats.totalTasks }}</h3>
+              <p class="card-label">Total Tasks</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card incomplete-tasks">
+        <mat-card-content>
+          <div class="card-content">
+            <div class="card-icon">
+              <mat-icon>pending_actions</mat-icon>
+            </div>
+            <div class="card-info">
+              <h3 class="card-number">{{ taskStats.incompleteTasks }}</h3>
+              <p class="card-label">Incomplete Tasks</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card completed-tasks">
+        <mat-card-content>
+          <div class="card-content">
+            <div class="card-icon">
+              <mat-icon>task_alt</mat-icon>
+            </div>
+            <div class="card-info">
+              <h3 class="card-number">{{ taskStats.completedTasks }}</h3>
+              <p class="card-label">Completed Tasks</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      <div class="chart-container">
+        <mat-card class="chart-card">
+          <mat-card-content>
+            <div id="statusChart" class="chart"></div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="chart-container">
+        <mat-card class="chart-card">
+          <mat-card-content>
+            <div id="priorityChart" class="chart"></div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="chart-container full-width">
+        <mat-card class="chart-card">
+          <mat-card-content>
+            <div id="dueDateChart" class="chart"></div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="chart-container full-width">
+        <mat-card class="chart-card">
+          <mat-card-content>
+            <div id="completionTimeChart" class="chart"></div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

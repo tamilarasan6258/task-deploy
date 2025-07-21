@@ -1,0 +1,64 @@
+.dialog-container {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  animation: popIn 0.3s ease-out;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.warning-text {
+  color: #d32f2f;
+  font-weight: bold;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+button[mat-button] {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button[mat-button]:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+button[color="warn"] {
+  background-color: #f44336;
+  color: #fff;
+}
+
+button[color="warn"]:hover {
+  background-color: #d32f2f;
+}
+
+button[mat-button]:not([color="warn"]) {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+button[mat-button]:not([color="warn"]):hover {
+  background-color: #cfcfcf;
+}

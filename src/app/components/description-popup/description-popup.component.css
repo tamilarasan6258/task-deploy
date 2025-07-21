@@ -1,0 +1,260 @@
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+  animation: fadeIn 0.3s ease-out;
+  cursor: pointer;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+:host::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Dialog Container - Popup Window */
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 700px;
+  max-height: 80vh;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  position: relative;
+  animation: slideIn 0.3s ease-out;
+  cursor: default;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.dialog-container::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes slideIn {
+  from {
+    transform: scale(0.9) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  color: #546e7a;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.close-btn:hover {
+  background: white;
+  color: #f44336;
+  border-color: #f44336;
+  transform: scale(1.1);
+}
+
+.close-btn mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* Header Section */
+.dialog-header {
+  text-align: center;
+  padding: 30px 40px 20px 40px;
+  background: linear-gradient(135deg, #e8f5e8 0%, #f3e5f5 100%);
+  border-bottom: 1px solid #e3f2fd;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.dialog-title {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #2e7d32;
+  letter-spacing: -0.025em;
+}
+
+.dialog-subtitle {
+  margin: 0;
+  font-size: 16px;
+  color: #546e7a;
+  font-weight: 400;
+}
+
+/* Description Badge */
+.description-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-weight: 500;
+  font-size: 14px;
+  position: absolute;
+  top: 20px;
+  right: 60px;
+  background: rgba(76, 175, 80, 0.1);
+  color: #388e3c;
+  border: 1px solid #4caf50;
+}
+
+/* Content Card */
+.content-card {
+  padding: 30px 40px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.content-card::-webkit-scrollbar {
+  display: none;
+}
+
+/* Description Content */
+.description-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.description-text {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 24px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  min-height: 120px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  :host {
+    padding: 10px;
+  }
+  
+  .dialog-container {
+    max-width: 95vw;
+    max-height: 90vh;
+    border-radius: 16px;
+  }
+  
+  .dialog-header {
+    padding: 25px 20px 15px 20px;
+  }
+  
+  .dialog-title {
+    font-size: 24px;
+  }
+  
+  .dialog-subtitle {
+    font-size: 14px;
+  }
+  
+  .description-badge {
+    position: static;
+    align-self: center;
+    margin-top: 8px;
+  }
+  
+  .content-card {
+    padding: 20px;
+  }
+  
+  .description-text {
+    padding: 16px;
+    font-size: 14px;
+  }
+  
+  .close-btn {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    padding: 5px;
+  }
+  
+  .dialog-container {
+    max-width: 98vw;
+    max-height: 95vh;
+    border-radius: 12px;
+  }
+  
+  .dialog-header {
+    padding: 20px 15px 10px 15px;
+  }
+  
+  .dialog-title {
+    font-size: 22px;
+  }
+  
+  .content-card {
+    padding: 15px;
+  }
+  
+  .description-text {
+    padding: 12px;
+    font-size: 14px;
+    min-height: 100px;
+  }
+}

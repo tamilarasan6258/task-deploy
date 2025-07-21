@@ -1,0 +1,97 @@
+  {
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+      "Task-Management-System": {
+        "projectType": "application",
+        "schematics": {},
+        "root": "",
+        "sourceRoot": "src",
+        "prefix": "app",
+        "architect": {
+          "build": {
+            "builder": "@angular-devkit/build-angular:application",
+            "options": {
+              "outputPath": "dist/task-management-system",
+              "index": "src/index.html",
+              "browser": "src/main.ts",
+              "polyfills": [
+                "zone.js"
+              ],
+              "tsConfig": "tsconfig.app.json",
+              "assets": [
+                "src/favicon.ico",
+                "src/assets"
+              ],
+              "styles": [
+                "@angular/material/prebuilt-themes/azure-blue.css",
+                "src/styles.css"
+              ],
+              "scripts": [ "src/assets/highcharts-lib/jspdf.js","src/assets/highcharts-lib/svg2pdf.js"]
+            },
+            "configurations": {
+              "production": {
+                "budgets": [
+                  {
+                    "type": "initial",
+                    "maximumWarning": "5MB",
+                    "maximumError": "7MB"
+                  },
+                  {
+                    "type": "anyComponentStyle",
+                    "maximumWarning": "3mb",
+                    "maximumError": "5mb"
+                  }
+                ],
+                "outputHashing": "all"
+              },
+              "development": {
+                "optimization": false,
+                "extractLicenses": false,
+                "sourceMap": true
+              }
+            },
+            "defaultConfiguration": "production"
+          },
+          "serve": {
+            "builder": "@angular-devkit/build-angular:dev-server",
+            "configurations": {
+              "production": {
+                "buildTarget": "Task-Management-System:build:production"
+              },
+              "development": {
+                "buildTarget": "Task-Management-System:build:development"
+              }
+            },
+            "defaultConfiguration": "development"
+          },
+          "extract-i18n": {
+            "builder": "@angular-devkit/build-angular:extract-i18n"
+          },
+          "test": {
+            "builder": "@angular-devkit/build-angular:karma",
+            "options": {
+              "polyfills": [
+                "zone.js",
+                "zone.js/testing"
+              ],
+              "tsConfig": "tsconfig.spec.json",
+              "assets": [
+                "src/favicon.ico",
+                "src/assets"
+              ],
+              "styles": [
+                "@angular/material/prebuilt-themes/azure-blue.css",
+                "src/styles.css"
+              ],
+              "scripts": []
+            }
+          }
+        }
+      }
+    },
+    "cli": {
+      "analytics": "525ac2c4-074d-4429-8158-7dde1adb827f"
+    }
+  }
