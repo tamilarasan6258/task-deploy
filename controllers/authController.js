@@ -90,7 +90,7 @@ exports.login = async (req, res) => {
     // Store refresh token in secure HttpOnly cookie
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: 'None',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
       // maxAge: 1 * 60 * 1000 // 7 days
@@ -163,7 +163,7 @@ exports.refreshToken = async (req, res) => {
 exports.logout = (req, res) => {
   res.clearCookie('refreshToken', {
     httpOnly: true,
-    secure: false,
+    secure: true,
     sameSite: 'None',
   });
   return res.status(200).json({ message: 'Logged out successfully' });
