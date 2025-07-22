@@ -1,4 +1,6 @@
 const Project = require('../models/projectModel');
+const Task = require('../models/taskModel');
+
 
 //CREATE PROJECT
 exports.createProject = async (req, res) => {
@@ -94,6 +96,10 @@ exports.deleteProject = async (req, res) => {
     if (!deleted) {
       return res.status(404).json({ msg: 'Project not found' });
     }
+
+    await Task.deleteMany({ project: projectId });
+
+    res.json({ msg: 'Project and its associated tasks deleted successfully' });
 
     res.json({ msg: 'Project deleted successfully' });
   } catch (err) {

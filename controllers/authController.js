@@ -90,7 +90,7 @@ exports.login = async (req, res) => {
     // Store refresh token in secure HttpOnly cookie
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: 'Lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
       // maxAge: 1 * 60 * 1000 // 7 days
