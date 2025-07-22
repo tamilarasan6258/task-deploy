@@ -192,20 +192,21 @@ export class DashboardComponent implements OnInit {
          
         }));
 
-        // Fetch tasks for each project dynamically
-        const taskRequests = this.projects.map(project =>
-          this.taskService.getTasksByProject(project._id).pipe(
-            tap((tasks: Task[]) => project.tasks = tasks) 
-          )
-        );
+        // // Fetch tasks for each project dynamically
+        // const taskRequests = this.projects.map(project =>
+        //   this.taskService.getTasksByProject(project._id).pipe(
+        //     tap((tasks: Task[]) => project.tasks = tasks) 
+        //   )
+        // );
 
-        // Wait for all task requests to complete before updating UI
-        forkJoin(taskRequests).subscribe({
-          next: () => {
-            console.log('All tasks successfully fetched');
-          },
-          error: (err: HttpErrorResponse) => console.error('Error fetching tasks:', err) 
-        });
+        // console.log("das",this.projects);
+        // // Wait for all task requests to complete before updating UI
+        // forkJoin(taskRequests).subscribe({
+        //   next: () => {
+        //     console.log('All tasks successfully fetched');
+        //   },
+        //   error: (err: HttpErrorResponse) => console.error('Error fetching tasks:', err) 
+        // });
 
          this.isLoading = false;
       },
@@ -272,33 +273,70 @@ export class DashboardComponent implements OnInit {
 }
 
 
+  // confirmDelete(project: Project): void {
+    
+  //   const hasInProgressTasks = project.tasks.some((task: Task) => task.status === 'in-progress');
+  //   console.log("delete",hasInProgressTasks);
+  //   // Show warning only if there are tasks in progress
+  //   const message = hasInProgressTasks
+  //     ? "⚠ Some tasks are in progress! Are you sure you want to delete the project?"
+  //     : "Are you sure you want to delete this project?";
+
+  //   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+  //     width: '350px',
+  //     data: { message }
+  //   });
+
+  //   dialogRef.afterClosed().subscribe((confirmed) => {
+  //     if (confirmed) {
+  //       this.projectService.deleteProject(project._id).subscribe({
+  //         next: () => {
+  //           this.fetchProjects();
+  //           this.showToast('Project deleted successfully!', 'success');
+  //         },
+  //         error: (err) => {
+  //           console.error('Error deleting project:', err);
+  //           this.showToast('Failed to delete project. Please try again.', 'error');
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
   confirmDelete(project: Project): void {
-    const hasInProgressTasks = project.tasks.some((task: Task) => task.status === 'in-progress');
-    // Show warning only if there are tasks in progress
-    const message = hasInProgressTasks
-      ? "⚠ Some tasks are in progress! Are you sure you want to delete the project?"
-      : "Are you sure you want to delete this project?";
+  this.taskService.getTasksByProject(project._id).subscribe({
+    next: (tasks: Task[]) => {
+      const hasInProgressTasks = tasks.some(task => task.status === 'in-progress');
+      const message = hasInProgressTasks
+        ? "⚠ Some tasks are in progress! Are you sure you want to delete the project?"
+        : "Are you sure you want to delete this project?";
 
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      data: { message }
-    });
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: '350px',
+        data: { message }
+      });
 
-    dialogRef.afterClosed().subscribe((confirmed) => {
-      if (confirmed) {
-        this.projectService.deleteProject(project._id).subscribe({
-          next: () => {
-            this.fetchProjects();
-            this.showToast('Project deleted successfully!', 'success');
-          },
-          error: (err) => {
-            console.error('Error deleting project:', err);
-            this.showToast('Failed to delete project. Please try again.', 'error');
-          }
-        });
-      }
-    });
-  }
+      dialogRef.afterClosed().subscribe((confirmed) => {
+        if (confirmed) {
+          this.projectService.deleteProject(project._id).subscribe({
+            next: () => {
+              this.fetchProjects();
+              this.showToast('Project deleted successfully!', 'success');
+            },
+            error: (err) => {
+              console.error('Error deleting project:', err);
+              this.showToast('Failed to delete project. Please try again.', 'error');
+            }
+          });
+        }
+      });
+    },
+    error: (err: HttpErrorResponse) => {
+      console.error('Error fetching tasks for project:', err);
+      this.showToast('Could not check tasks before deletion.', 'error');
+    }
+  });
+}
+
   getDueDateClass(dueDateStr: string): string {
     const today = new Date();
     const dueDate = new Date(dueDateStr);
